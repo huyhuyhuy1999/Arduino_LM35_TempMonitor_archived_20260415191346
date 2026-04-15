@@ -1,4 +1,4 @@
-const int LM35_PIN = A0;
+const int LM35_PINS[2] = {A0, A1};
 
 float readTemperatureC(int adcValue) {
   return (adcValue * 500.0) / 1023.0;
@@ -9,11 +9,17 @@ void setup() {
 }
 
 void loop() {
-  int adcValue = analogRead(LM35_PIN);
-  float temperatureC = readTemperatureC(adcValue);
+  int adcValues[2];
+  float temperatures[2];
 
-  Serial.print("LM35_A0=");
-  Serial.println(temperatureC);
+  for (int i = 0; i < 2; i++) {
+    adcValues[i] = analogRead(LM35_PINS[i]);
+    temperatures[i] = readTemperatureC(adcValues[i]);
+  }
+
+  Serial.print(temperatures[0]);
+  Serial.print(",");
+  Serial.println(temperatures[1]);
 
   delay(1000);
 }
